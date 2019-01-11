@@ -56,6 +56,24 @@ RUN curl -fSsL \
     ${GERRITFORGE_URL}/job/plugin-importer-${PLUGIN_VERSION}/${GERRITFORGE_ARTIFACT_DIR}/importer/importer.jar \
     -o ${GERRIT_HOME}/importer.jar
 
+#reviewers
+RUN curl -fSsL \
+    ${GERRITFORGE_URL}/job/plugin-reviewers-${PLUGIN_VERSION}/${GERRITFORGE_ARTIFACT_DIR}/reviewers/reviewers.jar \
+    -o ${GERRIT_HOME}/reviewers.jar
+RUN curl -fSsL \
+    ${GERRITFORGE_URL}/job/plugin-reviewers-${PLUGIN_VERSION}/${GERRITFORGE_ARTIFACT_DIR}/reviewers/reviewers-static.jar \
+    -o ${GERRIT_HOME}/reviewers-static.jar
+
+#HA
+#RUN curl -fSsL \
+#    ${GERRITFORGE_URL}/job/plugin-high-availability-${PLUGIN_VERSION}/${GERRITFORGE_ARTIFACT_DIR}/high-availability/high-availability.jar \
+#    -o ${GERRIT_HOME}/high-availability.jar
+
+# mysql dirver
+RUN curl -fSsL \
+    https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.43/mysql-connector-java-5.1.43.jar \
+    -o ${GERRIT_HOME}/mysql-connector-java-5.1.43.jar
+
 # Ensure the entrypoint scripts are in a fixed location
 COPY gerrit-entrypoint.sh /
 COPY gerrit-start.sh /
@@ -64,6 +82,7 @@ RUN chmod +x /gerrit*.sh
 #A directory has to be created before a volume is mounted to it.
 #So gerrit user can own this directory.
 RUN su-exec ${GERRIT_USER} mkdir -p $GERRIT_SITE
+COPY ssh ${GERRIT_HOME}/.ssh
 
 #Gerrit site directory is a volume, so configuration and repositories
 #can be persisted and survive image upgrades.

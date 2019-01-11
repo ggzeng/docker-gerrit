@@ -27,6 +27,7 @@ if [ "$1" = "/gerrit-start.sh" ]; then
   # If you're mounting ${GERRIT_SITE} to your host, you this will default to root.
   # This obviously ensures the permissions are set correctly for when gerrit starts.
   find "${GERRIT_SITE}/" ! -user `id -u ${GERRIT_USER}` -exec chown ${GERRIT_USER} {} \;
+  chown -R ${GERRIT_USER}:${GERRIT_USER} ${GERRIT_HOME}/.ssh
 
   # Initialize Gerrit if ${GERRIT_SITE}/git is empty.
   if [ -z "$(ls -A "$GERRIT_SITE/git")" ]; then
@@ -42,6 +43,10 @@ if [ "$1" = "/gerrit-start.sh" ]; then
   su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/delete-project.jar ${GERRIT_SITE}/plugins/delete-project.jar
   su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/events-log.jar ${GERRIT_SITE}/plugins/events-log.jar
   su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/importer.jar ${GERRIT_SITE}/plugins/importer.jar
+  su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/reviewers.jar ${GERRIT_SITE}/plugins/reviewers.jar
+  su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/reviewers-static.jar ${GERRIT_SITE}/plugins/reviewers-static.jar
+  #su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/high-availability.jar ${GERRIT_SITE}/plugins/high-availability.jar
+  su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/mysql-connector-java-5.1.43.jar ${GERRIT_SITE}/lib/mysql-connector-java-5.1.43.jar
 
   # Provide a way to customise this image
   echo
