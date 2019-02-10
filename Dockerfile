@@ -1,4 +1,5 @@
-FROM openjdk:8-jre-alpine
+ARG registry=""
+FROM ${registry}openjdk:8-jre-alpine
 
 MAINTAINER zsx <thinkernel@gmail.com>
 
