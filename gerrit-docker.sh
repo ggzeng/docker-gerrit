@@ -53,7 +53,7 @@ fi
 
 if [ $? == 0 ] ; then
   # add smtp hosts
-  docker exec $DOCKER_NAME bash -c "sed '/smtp.tongdun/d' /etc/hosts"
+  docker exec $DOCKER_NAME bash -c "sed -n '/smtp.tongdun/d' /etc/hosts"
   docker exec $DOCKER_NAME bash -c "echo '192.168.8.126 smtp.tongdun.cn' >> /etc/hosts"
   docker exec $DOCKER_NAME bash -c "echo '192.168.8.126 smtp.tongdun.net' >> /etc/hosts"
   echo "start gerrit docker success"
